@@ -15,6 +15,10 @@ import json
 #print(json.dumps(student, sort_keys=True))
 
 
-tup1 = 'Red', 'Black', 'White';
-print(json.dumps(tup1));
+#tup1 = 'Red', 'Black', 'White';
+#print(json.dumps(tup1));
+
+weird_json = '{"x": 1, "x": 2, "x": 3}'
+print json.loads(weird_json)
+
 
