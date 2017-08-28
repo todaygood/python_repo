@@ -38,6 +38,7 @@ listen rabbitmq_management
 
 listen mongodb
   bind 10.54.12.18:27017
+  server cloud-sz-control-b13-01 10.54.12.10:27017 check inter 2000 rise 2 fall 5
   server cloud-sz-control-b13-02 10.54.12.11:27017 check inter 2000 rise 2 fall 5
   server cloud-sz-control-b13-03 10.54.12.12:27017 check inter 2000 rise 2 fall 5
 
