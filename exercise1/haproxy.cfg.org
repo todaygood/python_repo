@@ -1,0 +1,428 @@
+global
+  chroot /var/lib/haproxy
+  user haproxy
+  group haproxy
+  daemon
+  log 10.54.12.10:5140 local1
+  maxconn 4000
+  stats socket /var/lib/kolla/haproxy/haproxy.sock
+
+defaults
+  log global
+  mode http
+  option redispatch
+  option httplog
+  option forwardfor
+  retries 3
+  timeout http-request 10s
+  timeout queue 1m
+  timeout connect 10s
+  timeout client 1m
+  timeout server 1m
+  timeout check 10s
+
+listen stats
+   bind 10.54.12.10:1984
+   mode http
+   stats enable
+   stats uri /
+   stats refresh 15s
+   stats realm Haproxy\ Stats
+   stats auth openstack:7GggUsWFHLJdiN9QK0CutUgupG3LrvF3SLREAeL5
+
+listen rabbitmq_management
+  bind 10.54.12.18:15672
+  server cloud-sz-control-b13-01 10.54.12.10:15672 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:15672 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:15672 check inter 2000 rise 2 fall 5
+
+listen mongodb
+  bind 10.54.12.18:27017
+  server cloud-sz-control-b13-01 10.54.12.10:27017 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:27017 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:27017 check inter 2000 rise 2 fall 5
+
+listen keystone_internal
+  bind 10.54.12.18:5000
+  http-request del-header X-Forwarded-Proto if { ssl_fc }
+  server cloud-sz-control-b13-01 10.54.12.10:5000 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:5000 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:5000 check inter 2000 rise 2 fall 5
+
+listen keystone_external
+  bind 192.168.63.238:5000 
+  http-request del-header X-Forwarded-Proto if { ssl_fc }
+  http-request set-header X-Forwarded-Proto https if { ssl_fc }
+  server cloud-sz-control-b13-01 10.54.12.10:5000 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:5000 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:5000 check inter 2000 rise 2 fall 5
+
+listen keystone_admin
+  bind 10.54.12.18:35357
+  http-request del-header X-Forwarded-Proto if { ssl_fc }
+  server cloud-sz-control-b13-01 10.54.12.10:35357 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:35357 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:35357 check inter 2000 rise 2 fall 5
+
+listen glance_registry
+  bind 10.54.12.18:9191
+  server cloud-sz-control-b13-01 10.54.12.10:9191 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:9191 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:9191 check inter 2000 rise 2 fall 5
+
+listen glance_api
+  bind 10.54.12.18:9292
+  server cloud-sz-control-b13-01 10.54.12.10:9292 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:9292 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:9292 check inter 2000 rise 2 fall 5
+
+listen glance_api_external
+  bind 192.168.63.238:9292 
+  server cloud-sz-control-b13-01 10.54.12.10:9292 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:9292 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:9292 check inter 2000 rise 2 fall 5
+
+listen nova_api
+  bind 10.54.12.18:8774
+  http-request del-header X-Forwarded-Proto if { ssl_fc }
+  server cloud-sz-control-b13-01 10.54.12.10:8774 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8774 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8774 check inter 2000 rise 2 fall 5
+
+listen nova_metadata
+  bind 10.54.12.18:8775
+  http-request del-header X-Forwarded-Proto if { ssl_fc }
+  server cloud-sz-control-b13-01 10.54.12.10:8775 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8775 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8775 check inter 2000 rise 2 fall 5
+
+listen placement_api
+  bind 10.54.12.18:8780
+  http-request del-header X-Forwarded-Proto
+  server cloud-sz-control-b13-01 10.54.12.10:8780 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8780 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8780 check inter 2000 rise 2 fall 5
+
+listen nova_novncproxy
+  bind 10.54.12.18:6080
+  http-request del-header X-Forwarded-Proto if { ssl_fc }
+  http-request set-header X-Forwarded-Proto https if { ssl_fc }
+  server cloud-sz-control-b13-01 10.54.12.10:6080 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:6080 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:6080 check inter 2000 rise 2 fall 5
+
+
+listen nova_api_external
+  bind 192.168.63.238:8774 
+  http-request del-header X-Forwarded-Proto if { ssl_fc }
+  http-request set-header X-Forwarded-Proto https if { ssl_fc }
+  server cloud-sz-control-b13-01 10.54.12.10:8774 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8774 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8774 check inter 2000 rise 2 fall 5
+
+listen nova_metadata_external
+  bind 192.168.63.238:8775 
+  http-request del-header X-Forwarded-Proto if { ssl_fc }
+  http-request set-header X-Forwarded-Proto https if { ssl_fc }
+  server cloud-sz-control-b13-01 10.54.12.10:8775 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8775 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8775 check inter 2000 rise 2 fall 5
+
+listen placement_api_external
+  bind 192.168.63.238:8780
+  http-request del-header X-Forwarded-Proto
+  http-request set-header X-Forwarded-Proto https if { ssl_fc }
+  server cloud-sz-control-b13-01 10.54.12.10:8780 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8780 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8780 check inter 2000 rise 2 fall 5
+
+listen nova_novncproxy_external
+  bind 192.168.63.238:6080 
+  http-request del-header X-Forwarded-Proto if { ssl_fc }
+  http-request set-header X-Forwarded-Proto https if { ssl_fc }
+  server cloud-sz-control-b13-01 10.54.12.10:6080 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:6080 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:6080 check inter 2000 rise 2 fall 5
+
+
+listen neutron_server
+  bind 10.54.12.18:9696
+  server cloud-sz-control-b13-01 10.54.12.10:9696 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:9696 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:9696 check inter 2000 rise 2 fall 5
+
+listen neutron_server_external
+  bind 192.168.63.238:9696 
+  server cloud-sz-control-b13-01 10.54.12.10:9696 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:9696 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:9696 check inter 2000 rise 2 fall 5
+
+listen horizon
+  bind 10.54.12.18:80
+  balance source
+  http-request del-header X-Forwarded-Proto if { ssl_fc }
+  server cloud-sz-control-b13-01 10.54.12.10:80 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:80 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:80 check inter 2000 rise 2 fall 5
+
+listen horizon_external
+  bind 192.168.63.238:80
+  server cloud-sz-control-b13-01 10.54.12.10:80 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:80 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:80 check inter 2000 rise 2 fall 5
+
+listen cinder_api
+  bind 10.54.12.18:8776
+  http-request del-header X-Forwarded-Proto if { ssl_fc }
+  server cloud-sz-control-b13-01 10.54.12.10:8776 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8776 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8776 check inter 2000 rise 2 fall 5
+
+listen cinder_api_external
+  bind 192.168.63.238:8776 
+  http-request del-header X-Forwarded-Proto if { ssl_fc }
+  http-request set-header X-Forwarded-Proto https if { ssl_fc }
+  server cloud-sz-control-b13-01 10.54.12.10:8776 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8776 check inter 2000 rise 2 fall 5
+
+listen cloudkitty_api
+  bind 10.54.12.18:8889
+  http-request del-header X-Forwarded-Proto if { ssl_fc }
+  server cloud-sz-control-b13-01 10.54.12.10:8889 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8889 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8889 check inter 2000 rise 2 fall 5
+
+listen cloudkitty_api_external
+  bind 192.168.63.238:8889 
+  http-request del-header X-Forwarded-Proto if { ssl_fc }
+  http-request set-header X-Forwarded-Proto https if { ssl_fc }
+  server cloud-sz-control-b13-01 10.54.12.10:8889 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8889 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8889 check inter 2000 rise 2 fall 5
+
+
+
+listen heat_api
+  bind 10.54.12.18:8004
+  http-request del-header X-Forwarded-Proto if { ssl_fc }
+  server cloud-sz-control-b13-01 10.54.12.10:8004 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8004 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8004 check inter 2000 rise 2 fall 5
+
+listen heat_api_cfn
+  bind 10.54.12.18:8000
+  http-request del-header X-Forwarded-Proto if { ssl_fc }
+  server cloud-sz-control-b13-01 10.54.12.10:8000 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8000 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8000 check inter 2000 rise 2 fall 5
+
+listen heat_api_external
+  bind 192.168.63.238:8004 
+  http-request del-header X-Forwarded-Proto if { ssl_fc }
+  http-request set-header X-Forwarded-Proto https if { ssl_fc }
+  server cloud-sz-control-b13-01 10.54.12.10:8004 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8004 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8004 check inter 2000 rise 2 fall 5
+
+listen heat_api_cfn_external
+  bind 192.168.63.238:8000 
+  http-request del-header X-Forwarded-Proto if { ssl_fc }
+  http-request set-header X-Forwarded-Proto https if { ssl_fc }
+  server cloud-sz-control-b13-01 10.54.12.10:8000 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8000 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8000 check inter 2000 rise 2 fall 5
+
+listen grafana_server
+  bind 10.54.12.18:3000
+  http-request del-header X-Forwarded-Proto if { ssl_fc }
+  http-request set-header X-Forwarded-Proto https if { ssl_fc }
+  server cloud-sz-control-b13-02 10.54.12.11:3000 check inter 2000 rise 2 fall 5
+
+listen grafana_server_external
+  bind 192.168.63.238:3000 
+  http-request del-header X-Forwarded-Proto if { ssl_fc }
+  http-request set-header X-Forwarded-Proto https if { ssl_fc }
+  server cloud-sz-control-b13-02 10.54.12.11:3000 check inter 2000 rise 2 fall 5
+
+listen ironic_api
+  bind 10.54.0.18:6385
+  server cloud-sz-control-b13-01 10.54.0.10:6385 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.0.11:6385 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.0.12:6385 check inter 2000 rise 2 fall 5
+listen ironic_ipxe_http
+  bind 10.54.0.18:7001
+  server cloud-sz-control-b13-01 10.54.0.10:7001 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.0.11:7001 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.0.12:7001 check inter 2000 rise 2 fall 5
+listen ironic_inspector
+  bind 10.54.0.18:5050
+  server cloud-sz-control-b13-01 10.54.0.10:5050 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.0.11:5050 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.0.12:5050 check inter 2000 rise 2 fall 5
+listen ironic_api_external
+  bind 192.168.63.238:6385 
+  server cloud-sz-control-b13-01 10.54.0.10:6385 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.0.11:6385 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.0.12:6385 check inter 2000 rise 2 fall 5
+listen ironic_inspector_external
+  bind 192.168.63.238:5050 
+  http-request del-header X-Forwarded-Proto
+  http-request set-header X-Forwarded-Proto https if { ssl_fc }
+  server cloud-sz-control-b13-01 10.54.0.10:5050 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.0.11:5050 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.0.12:5050 check inter 2000 rise 2 fall 5
+
+
+
+
+
+
+listen murano_api
+  bind 10.54.12.18:8082
+  server cloud-sz-control-b13-01 10.54.12.10:8082 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8082 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8082 check inter 2000 rise 2 fall 5
+
+listen murano_api_external
+  bind 192.168.63.238:8082 
+  server cloud-sz-control-b13-01 10.54.12.10:8082 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8082 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8082 check inter 2000 rise 2 fall 5
+
+listen manila_api
+  bind 10.54.12.18:8786
+  server cloud-sz-control-b13-01 10.54.12.10:8786 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8786 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8786 check inter 2000 rise 2 fall 5
+
+listen manila_api_external
+  bind 192.168.63.238:8786 
+  server cloud-sz-control-b13-01 10.54.12.10:8786 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8786 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8786 check inter 2000 rise 2 fall 5
+
+
+
+listen sahara_api
+  bind 10.54.12.18:8386
+  server cloud-sz-control-b13-01 10.54.12.10:8386 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8386 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8386 check inter 2000 rise 2 fall 5
+
+listen sahara_api_external
+  bind 192.168.63.238:8386 
+  server cloud-sz-control-b13-01 10.54.12.10:8386 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8386 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8386 check inter 2000 rise 2 fall 5
+
+
+
+
+userlist kibanauser
+  user kibana insecure-password ukYAfQg3eCoUa1QatdQfAlOFJ7IUhAYkNtHOiOff
+
+listen kibana
+  bind 10.54.12.18:5601
+  acl auth_acl http_auth(kibanauser)
+  http-request auth realm basicauth unless auth_acl
+  server cloud-sz-control-b13-01 10.54.12.10:5601 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:5601 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:5601 check inter 2000 rise 2 fall 5
+
+listen kibana_external
+  bind 192.168.63.238:5601 
+  http-request del-header X-Forwarded-Proto if { ssl_fc }
+  http-request set-header X-Forwarded-Proto https if { ssl_fc }
+  acl auth_acl http_auth(kibanauser)
+  http-request auth realm basicauth unless auth_acl
+  server cloud-sz-control-b13-01 10.54.12.10:5601 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:5601 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:5601 check inter 2000 rise 2 fall 5
+
+listen gnocchi_api
+  bind 10.54.12.18:8041
+  server cloud-sz-control-b13-01 10.54.12.10:8041 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8041 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8041 check inter 2000 rise 2 fall 5
+
+listen gnocchi_api_external
+  bind 192.168.63.238:8041 
+  server cloud-sz-control-b13-01 10.54.12.10:8041 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8041 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8041 check inter 2000 rise 2 fall 5
+
+listen elasticsearch
+  option dontlog-normal
+  bind 10.54.12.18:9200
+  server cloud-sz-control-b13-01 10.54.12.10:9200 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:9200 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:9200 check inter 2000 rise 2 fall 5
+
+
+listen ceilometer_api
+  bind 10.54.12.18:8777
+  server cloud-sz-control-b13-01 10.54.12.10:8777 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8777 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8777 check inter 2000 rise 2 fall 5
+
+listen ceilometer_api_external
+  bind 192.168.63.238:8777 
+  server cloud-sz-control-b13-01 10.54.12.10:8777 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8777 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8777 check inter 2000 rise 2 fall 5
+
+listen aodh_api
+  bind 10.54.12.18:8042
+  server cloud-sz-control-b13-01 10.54.12.10:8042 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8042 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8042 check inter 2000 rise 2 fall 5
+
+listen aodh_api_external
+  bind 192.168.63.238:8042 
+  server cloud-sz-control-b13-01 10.54.12.10:8042 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8042 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8042 check inter 2000 rise 2 fall 5
+
+
+
+
+listen mistral_api
+  bind 10.54.12.18:8989
+  server cloud-sz-control-b13-01 10.54.12.10:8989 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8989 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8989 check inter 2000 rise 2 fall 5
+
+listen mistral_api_external
+  bind 192.168.63.238:8989 
+  server cloud-sz-control-b13-01 10.54.12.10:8989 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-02 10.54.12.11:8989 check inter 2000 rise 2 fall 5
+  server cloud-sz-control-b13-03 10.54.12.12:8989 check inter 2000 rise 2 fall 5
+
+
+# (NOTE): This defaults section deletes forwardfor as recommended by:
+#         https://marc.info/?l=haproxy&m=141684110710132&w=1
+
+defaults
+  log global
+  mode http
+  option redispatch
+  option httplog
+  retries 3
+  timeout http-request 10s
+  timeout queue 1m
+  timeout connect 10s
+  timeout client 1m
+  timeout server 1m
+  timeout check 10s
+
+listen mariadb
+  mode tcp
+  timeout client 3600s
+  timeout server 3600s
+  option tcplog
+  option tcpka
+  option mysql-check user haproxy post-41
+  bind 10.54.12.18:3306
+  server cloud-sz-control-b13-01 10.54.12.10:3306 check inter 2000 rise 2 fall 5 
+  server cloud-sz-control-b13-02 10.54.12.11:3306 check inter 2000 rise 2 fall 5 backup
+  server cloud-sz-control-b13-03 10.54.12.12:3306 check inter 2000 rise 2 fall 5 backup
