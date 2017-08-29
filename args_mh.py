@@ -1,13 +1,19 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-def test0(x,y):
-	'''function test0 '''
-	print('x=%d,y=%d\n'%(x,y))
+import sys
+print(sys.argc,'\n',sys.argv)
 
-def test1(x,y,z):
-	'''function test1 '''
-	print('x=%d,y=%d,z=%d\n'%(x,y,z))
+if 0:
+    def test0(x,y):
+        '''function test0 '''
+        print('x=%d,y=%d\n'%(x,y))
+
+    def test1(x,y,z):
+        '''function test1 '''
+        print('x=%d,y=%d,z=%d\n'%(x,y,z))
+
+
 
 #位置参数调用
 #test0(3,5)
