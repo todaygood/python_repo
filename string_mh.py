@@ -36,8 +36,33 @@ print(info)
 
 #print str(1.0/7.0)
 
+
+'''
 #print is a new line
 for x in range(1,11):
 	print(repr(x).rjust(2),repr(x*x).rjust(3),repr(x*x*x).rjust(4))
+'''
+
+#practise string concat 
+
+if False:
+    name=input("Name:")
+    age=input("Age:")
+
+
+    info1='''
+    name={name}
+    age={age}
+    '''.format(name=name,age=age)
+
+    info2='''
+    name={_name}
+    age={_age}
+    '''.format(_name=name,_age=age)
+
+    print(info1)
+    print(info2)
+
+
 
 
