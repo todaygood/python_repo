@@ -1,0 +1,6 @@
+  File "./traceback.py", line 15, in <module>
+    f()
+  File "./traceback.py", line 6, in f
+    g()
+  File "./traceback.py", line 10, in g
+    traceback.print_stack(None,None,f)

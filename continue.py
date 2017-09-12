@@ -1,10 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 
-for i in range(0,10):
-    if i < 5:
-        print(i)
-    else:
-        continue
-    print("hehe")
-
+while True:
+	s = raw_input("Enter something:")
+	if s=="quit":
+		break
+	if len(s) < 3:
+		continue
+	print "input is sufficient length"
 
