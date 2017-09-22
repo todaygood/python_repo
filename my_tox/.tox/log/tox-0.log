@@ -1,0 +1,14 @@
+actionid: tox
+msg: packaging
+cmdargs: ['/usr/bin/python2', local('/root/virtual_env/py3/python_repo/my_tox/setup.py'), 'sdist', '--formats=zip', '--dist-dir', local('/root/virtual_env/py3/python_repo/my_tox/.tox/dist')]
+
+ERROR:root:Error parsing
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/site-packages/pbr/core.py", line 111, in pbr
+    attrs = util.cfg_to_args(path, dist.script_args)
+  File "/usr/lib/python2.7/site-packages/pbr/util.py", line 251, in cfg_to_args
+    kwargs = setup_cfg_to_setup_kwargs(config, script_args)
+  File "/usr/lib/python2.7/site-packages/pbr/util.py", line 313, in setup_cfg_to_setup_kwargs
+    description_file = open(filename)
+IOError: [Errno 2] No such file or directory: 'README.rst'
+error in setup command: Error parsing /root/virtual_env/py3/python_repo/my_tox/setup.cfg: IOError: [Errno 2] No such file or directory: 'README.rst'
