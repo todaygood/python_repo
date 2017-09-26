@@ -6,6 +6,9 @@ b=[3,6,8,9,10]
 set_a = set(a)
 set_b = set(b) 
 
+print(set_a)
+
+
 #print set_a.union(set_b)
 #print set_a | set_b
 #
@@ -45,4 +48,18 @@ set_b = set(b)
 #c = {1,3,9}
 #print type(c)
 
-print set_a.clear()
+#print(set_a.clear())
+
+
+'''
+set和dictionary都用{}表示，因此创建一个空集合： a=set()
+
+
+>>> a = set([1, 2, 3, 1])
+>>> a
+set([1, 2, 3])
+
+
+'''
+
+
