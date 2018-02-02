@@ -32,6 +32,9 @@ print(re_telephone.match('010-56781234').groups())
 print(re_telephone.match('010-5678').groups())
 
 
+m=re.match(r"(?P<First_Name>\w+) (?P<Last_Name>\w+)","Margin Hu")
+print(m.groupdict())
+
 
 
 
