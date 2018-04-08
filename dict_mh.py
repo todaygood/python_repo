@@ -28,12 +28,13 @@ student={'n001':'Hu Jun','n002':'Tian Jing','n003':'yuan aisha'}
 #
 #
 #
-
+print("use for to loop")
 for i in student:
     print(i,student[i])
 
 # item(),convert dict to list
-print(student.items())
+#print(student.items())
 
+print("use for k,v to loop")
 for k,v in student.items():
     print(k,v)
