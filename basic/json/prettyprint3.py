@@ -11,8 +11,8 @@ def main():
     with open(sys.argv[1],"r") as infile:
        print("pretty print the json file")
        js = json.load(infile) 
-       outfile = open("./nodes2.json","w")
-       json.dump(js,outfile,sort_keys=True,indent=4,separators=(',', ': '))
+       outfile = open("./nodes3.json","w")
+       pprint.pprint(js,outfile)
    
     infile.close()
     outfile.close()

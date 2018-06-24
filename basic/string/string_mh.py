@@ -64,5 +64,7 @@ if False:
     print(info2)
 
 
-
-
+print("Show strip usage")
+str3="abc  "
+str4="world"
+print(str3.strip()+str4)
