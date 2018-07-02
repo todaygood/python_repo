@@ -2,7 +2,6 @@
 
 import sys
 
-
 find_str=sys.argv[1]
 replace_str=sys.argv[2]
 

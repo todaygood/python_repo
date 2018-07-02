@@ -1,0 +1,3 @@
+aggregate            availsize size    usedsize 
+-------------------- --------- ------- -------- 
+FAS8040_01_aggr1_sas 27.82TB   79.42TB 51.60TB

@@ -5,4 +5,5 @@ while True:
 	if s=="quit" :
 		break
 	print "len string is" ,len(s)
+
 print "done"
