@@ -1,8 +1,9 @@
 #!/usr/bin/env python
+# coding:utf-8 
 
 import ipaddress
 
-print(ipaddress.ip_address('192.0.2.1'))
+print(ipaddress.ip_address('192.168.2.1'))
 
 print ( ipaddress.ip_address(3221225985)) 
 
