@@ -2,18 +2,25 @@
 
 class Forest(object):
     '''Forest demo class'''
-    name="first tree"
+
+    count = 0
     def grow(self):
-        print("the tree is growing")
+        self.count += 1
+        print("tree count is %d" % self.count)
 
     def number(self,num=1):
-        if num ==1 :
+        if num == 1:
             print("there is 1 tree")
         else:
             print("there are", num,"trees")
 
-forest=Forest()
-forest.grow()
-forest.number(12)
-print(forest.name)
 
+forest = Forest()
+
+forest.grow()
+
+print("count=%d" % forest.count)
+
+forest.number(12)
+
+print("count=%d" % forest.count)
