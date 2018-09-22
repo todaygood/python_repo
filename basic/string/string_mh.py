@@ -14,7 +14,6 @@ print('+'.join(['1','2','3']))
 print(s.lower())
 print(s.upper())
 print(s.replace('l','r',2))
-print('1+2+3+4'.split('+'))
 print(s.swapcase())
 
 print('1123'.zfill(30))
