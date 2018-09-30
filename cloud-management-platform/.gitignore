@@ -1,0 +1,16 @@
+# Python:
+*.py[cod]
+*.so
+*.egg
+*.egg-info
+dist
+build
+
+# My Configuration
+.idea
+venv
+config.ini
+config_db.ini
+ehr_transit_log
+test.py
+ali_monitor.log

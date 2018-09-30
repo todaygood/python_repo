@@ -1,0 +1,14 @@
+[MSSQL]
+host =
+db =
+user =
+pwd =
+charset = utf8
+
+
+[MYSQL]
+host =
+db =
+user =
+pwd =
+charset = uft8mb4
