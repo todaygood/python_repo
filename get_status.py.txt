@@ -1,6 +1,0 @@
->>> dom.info()
-[2, 524288L, 524288L, 4, 127042690110L]
->>> dom.vcpus
-<bound method virDomain.vcpus of <libvirt.virDomain instance at 0x7f67568059e0>>
->>> dom.vcpus()
-([(0, 2, 31713368088L, 12), (1, 2, 47108015796L, 2), (2, 2, 29188507745L, 0), (3, 2, 19065819354L, 14)], [(True, False, True, False, True, False, True, False, True, False, True, False, True, False, True, False), (True, False, True, False, True, False, True, False, True, False, True, False, True, False, True, False), (True, False, True, False, True, False, True, False, True, False, True, False, True, False, True, False), (True, False, True, False, True, False, True, False, True, False, True, False, True, False, True, False)])

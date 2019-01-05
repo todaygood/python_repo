@@ -3,7 +3,7 @@ import random
 import time
 import errno
 
-
+'''
 a = []
 try:
     for i in range(1000):
@@ -11,11 +11,12 @@ try:
         #s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         s.bind(('192.168.97.139', 0))
         a.append(s)
-except Exception, e:
-    print e
+except Exception as e: 
+    print(e)
+'''
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(("www.google.com", 80))
+s.connect(("www.baidu.com", 80))
 
 
 '''
