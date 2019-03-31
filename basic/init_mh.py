@@ -12,6 +12,6 @@ p = Person("hujun")
 
 print p.name
 
-p.say();
+p.say()
 
-	
+
