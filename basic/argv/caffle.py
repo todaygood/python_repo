@@ -4,28 +4,22 @@
 import time
 import argparse
 
-
-
 if __name__ == '__main__':
     script_start_time = time.time()
  
     parser = argparse.ArgumentParser(description='Classification example - DIGITS')
  
-    ### Positional arguments
- 
-    parser.add_argument('caffemodel',   help='Path to a .caffemodel')
+    # Positional arguments
+ l',   help='Path to a .caffemodel')
     parser.add_argument('deploy_file',  help='Path to the deploy file')
     parser.add_argument('image',        help='Path to an image')
+
+    parser.add_argument('caffemode
+    # Optional arguments
  
-    ### Optional arguments
- 
-    parser.add_argument('-m', '--mean',
-            help='Path to a mean file (*.npy)')
-    parser.add_argument('-l', '--labels',
-            help='Path to a labels file')
-    parser.add_argument('--nogpu',
-            action='store_true',
-            help="Don't use the GPU")
+    parser.add_argument('-m', '--mean', help='Path to a mean file (*.npy)')
+    parser.add_argument('-l', '--labels', help='Path to a labels file')
+    parser.add_argument('--nogpu', help="Don't use the GPU")
  
     args = vars(parser.parse_args())
  

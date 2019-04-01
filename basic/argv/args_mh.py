@@ -2,7 +2,10 @@
 # -*- coding:utf-8 -*-
 
 import sys
-print(sys.argc,'\n',sys.argv)
+
+print(len(sys.argv),'\n',sys.argv)
+
+
 
 if 0:
     def test0(x,y):
