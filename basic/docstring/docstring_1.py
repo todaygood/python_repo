@@ -4,10 +4,14 @@
 """这是一个测试模块"""
 
 import os
+
+
 def this_test():
-    #函数的docstring
+    #  函数的docstring
     """一个测试的方法"""
     print "this is a test!"
+
+
 if __name__ == "__main__":
     this_test()
 
