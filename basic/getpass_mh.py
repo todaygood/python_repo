@@ -2,8 +2,8 @@
 
 import getpass
 
-user=input("username:")
-password=getpass.getpass("Password:")
+user = input("username:")
+password = getpass.getpass("Password:")
 
 print(user,"\n",password)
 

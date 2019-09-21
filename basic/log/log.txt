@@ -1,0 +1,3 @@
+2019-04-21 06:12:36,308 - logging_mh.py[line:11] - CRITICAL: This is a critical Message
+2019-04-21 06:12:36,309 - logging_mh.py[line:12] - ERROR: This is a error Message
+2019-04-21 06:12:36,309 - logging_mh.py[line:15] - INFO: This is a info Message
