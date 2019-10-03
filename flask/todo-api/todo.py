@@ -1,4 +1,4 @@
-#!flask/bin/python
+#!/bin/python
 #coding:utf-8
 
 from flask import Flask, jsonify
@@ -66,6 +66,6 @@ def create_task():
     return jsonify({'task': task}), 201  #并且返回这个添加的task内容和状态码。
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',debug=True)
+    app.run(host='0.0.0.0',port=7000,debug=True)
 
 
