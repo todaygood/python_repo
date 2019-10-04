@@ -8,6 +8,7 @@ verify_ssl = true
 [packages]
 flask = "*"
 redis = "*"
+flask-ext = "*"
 
 [requires]
 python_version = "3.7"
