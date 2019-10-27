@@ -6,11 +6,8 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-flask = "*"
-redis = "*"
-flask-ext = "*"
-flask-restive = "*"
-requests = "*"
+libvirt = "*"
+libvirt-python = "*"
 
 [requires]
 python_version = "3.7"

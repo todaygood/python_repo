@@ -9,9 +9,17 @@ MY_URL = '/everything/api/v1/'
 hello='今天天气真好呀'
 not_hello = '为什么今天天气不好呀'
 
+global vm_name_list
+
+
+vm_name_list=[1,2]
+
+
+
 #get
 @app.route(MY_URL + 'tasks/get/',methods=['GET'])
 def get_task():
+    
     if not 'abc' in request.args.to_dict():
         abort(404)
     print(request.args.to_dict())  #
